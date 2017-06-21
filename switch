@@ -1,0 +1,37 @@
+public class Java
+{
+int i;
+int num1=10,num2=10;
+int add,sub,mul,div;
+   public static void main(String []args) 
+   {
+       System.out.println("1-Add, 2-Sub, 3-Mul, 4-Div");
+       Java object =new Java();
+       Scanner in=new Scanner(System.in);
+       object i=in.nextInt();
+       System.out.println("You selected" "+" i);
+       switch(i)
+       {
+         case 1:
+             add=num1+num2;
+         System.out.println(add);
+         break;
+         case 2:
+             sub=num1-num2;
+              System.out.println(sub);
+        break;
+        case 3:
+            mul=num1*num2;
+             System.out.println(mul);
+        break;
+        case 4:
+            div=num1/num2;
+             System.out.println(div);
+             break;
+        default :
+         System.out.println("NOT VALID");
+            
+       }
+      
+   }
+} 
