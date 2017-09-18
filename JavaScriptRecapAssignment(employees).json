@@ -1,0 +1,50 @@
+[
+		{
+			"id": 1,
+			"name": "Jonas",
+			"age": "20",
+			"contact": "9486175156"
+		},
+		{
+			"id": 2,
+			"name": "Kibo",
+			"age": "45",
+			"contact": "8776652947"
+		},
+		{
+			"id": 3,
+			"name": "Basil",
+			"age": "85",
+			"contact": "8722652947"
+		},
+		{
+			"id": 4,
+			"name": "Todd",
+			"age": "16",
+			"contact": "9078095146"
+		},
+		{
+			"id": 5,
+			"name": "Otto",
+			"age": "23",
+			"contact": "7878096754"
+		},
+		{
+			"id": 6,
+			"name": "Lance",
+			"age": "19",
+			"contact": "8967764323"
+		},
+		{
+			"id": 7,
+			"name": "Bruce",
+			"age": "24",
+			"contact": "9099090923"
+		},
+		{
+			"id": 8,
+			"name": "Troy",
+			"age": "22",
+			"contact": "8869412654"
+		}
+    ]
