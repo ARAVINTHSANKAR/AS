@@ -13,10 +13,33 @@ function Jsonstorage1() {
   var parsedObject = JSON.parse(retrievedObject);
 	document.getElementById("Table").innerHTML = "<tr><th>" +"ID"+ "</th><th>" +"NAME"+ "</th><th>" +"COMPANY"+ "</th><th>" +"COUNTRY"+ "</th><th>" +"RESET"+ "</th></th>";
   for (var i = 0; i < 8 ; i ++) {
-	document.getElementById("Table").innerHTML += "<tr><td>" +parsedObject[i].id+ "</td><td>" +parsedObject[i].name+ "</td><td>" +parsedObject[i].company+ "</td><td>" +parsedObject[i].country+ "</td><td>" +"<button>EDIT</button> <button>DELETE</button>"+ "</td></tr>";
+	document.getElementById("Table").innerHTML += "<tr><td>" +parsedObject[i].id+ "</td><td>" +parsedObject[i].name+ "</td><td>" +parsedObject[i].company+ "</td><td>" +parsedObject[i].country+ "</td><td>" +"<button id = mybutt1 onclick = Buttonedit("+i+")>EDIT</button> <button onclick = Buttondelete() >DELETE</button> "+ "</td></tr>";
+
+
   }
 /*     var control = document.getElementById("employeeTable");
  control.style.visibility = "hidden"; */
+}
+
+
+function Buttonedit(id) {
+	alert(id);
+ 	var control = document.getElementById("EditingBox");
+	control.style.visibility = "visible";
+	
+	var x = document.getElementById("mybutt1").id;
+	alert(x);
+	
+	document.getElementById("textid").value = "id";
+	document.getElementById("textname").innerHTML = parsedobject[1].name;
+	document.getElementById("textcompany").innerHTML = parsedObject[1].company;
+	document.getElementById("textcountry").innerHTML = parsedObject[2].country;
+	
+	document.getElementById("demo").value = hello;
+}
+function Buttondelete() {
+	
+
 }
 
 function Jsonstorage2() {
@@ -40,3 +63,6 @@ function Jsonstorage2() {
       /* var control = document.getElementById("companyTable");
  control.style.visibility = "hidden"; */
 }
+
+
+
