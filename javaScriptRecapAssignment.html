@@ -1,35 +1,90 @@
 <!DOCTYPE>
 
 <html>
+
 <head>
+
 	<title>Web Service</title>
 	<script src = "script.js"> </script>
-	
 	<link rel = "stylesheet" href = "style.css" />
+
 </head>
 
 <body>
+	
 	<div id="ButtonsArea">
 		<button onclick = "Jsonstorage1()" class = "button"><h2> COMPANIES <h2></button>
 		<button onclick = "Jsonstorage2()" class = "button"><h2> EMPLOYEES <h2></button>
+		<button id = "newdatabutton1" style = "visibility: hidden;" class="buttonnew buttonnew3" onclick = "newdatacompany()">NEW COMPANY DATA</button>
+		<button id = "newdatabutton2" style = "visibility: hidden;" class="buttonnew buttonnew3" onclick = "newdataemployee()">NEW EMPLOYEE DATA</button>
+	</div>
+		<div id = "EditingBox"  style = "visibility: hidden;">
+		<fieldset>
+			<legend>DETAILS</legend>
+			ID 
+			<textarea id = "textid" rows="1" cols="10"> </textarea> 
+			NAME 
+			<textarea id = "textname" rows="1" cols="10"> </textarea>  
+			COMPANY 
+			<textarea id = "textcompany" rows="1" cols="10"> </textarea>
+			COUNTRY 
+			<textarea id = "textcountry" rows="1" cols="10"> </textarea> 
+			<button onclick = "saveButton()">Save</button> <button onclick = "resetfun()">Reset</button> <button onclick = "cancel()">Cancel</button>
+		</fieldset>
+	</div> 
+		
+	<div id = "EditingBox2"  style = "visibility: hidden;">
+		<fieldset>
+			<legend>DETAILS</legend>
+			ID 
+			<textarea id = "textid2" rows="1" cols="10"> </textarea> 
+			NAME 
+			<textarea id = "textname2" rows="1" cols="10"> </textarea>  
+			AGE 
+			<textarea id = "textage" rows="1" cols="10"> </textarea>
+			CONTACT 
+			<textarea id = "textcontact" rows="1" cols="10"> </textarea> 
+			<button onclick = "saveButton2()">Save</button> <button onclick = "resetfun()">Reset</button> <button onclick = "cancel2()">Cancel</button>
+		</fieldset>
 	</div>
 	
  	<div>
 		<table id = "Table">
 		</table>
-	</div> 
+	</div>
+
+	<div id = "newdatasection" style = "visibility: hidden;">
+	<fieldset>
+			<legend>DETAILS</legend>
+			ID 
+			<textarea id = "newid" rows="1" cols="10"> </textarea> 
+			NAME 
+			<textarea id = "newname" rows="1" cols="10"> </textarea>  
+			COMPANY 
+			<textarea id = "newcompany" rows="1" cols="10"> </textarea>
+			COUNTRY 
+			<textarea id = "newcountry" rows="1" cols="10"> </textarea> 
+			
+			<button onclick = process()>Save Me!!!</button>
+		</fieldset>
+	</div>
 	
-	<div id = "EditingBox"  style = "visibility: hidden;">
-	ID <br>
-	<textarea id = "textid" rows="1" cols="10"> </textarea> <br>
-	NAME <br>
-	<textarea id = "textname" rows="2" cols="10"> </textarea> <br>
-	COMPANY <br>
-	<textarea id = "textcompany" rows="2" cols="20"> </textarea> <br>
-	COUNTRY <br>
-	<textarea id = "textcountry" rows="3" cols="20"> </textarea> <br>
-	<input id = "demo" type = "text" value  = ""/>
+		<div id = "newdatasection2" style = "visibility: hidden;">
+	<fieldset>
+			<legend>DETAILS</legend>
+			ID 
+			<textarea id = "newid2" rows="1" cols="10"> </textarea> 
+			NAME 
+			<textarea id = "newname2" rows="1" cols="10"> </textarea>  
+			AGE 
+			<textarea id = "newage" rows="1" cols="10"> </textarea>
+			CONTACT 
+			<textarea id = "newcontact" rows="1" cols="10"> </textarea> 
+			
+			<button onclick = process2()>Save Me!!!</button>
+		</fieldset>
 	</div>
 	
 </body>
+
 </html>
