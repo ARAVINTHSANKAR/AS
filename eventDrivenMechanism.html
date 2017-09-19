@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
+<body ng-app="myApp" ng-controller="myCtrl">
+
+	<style>
+			.styles {
+			text-shadow : 1px 1px black;
+			color : #2e6cd1;
+			font-size : 20px;
+			}
+	</style>
+
+	<div>
+		<h1 ng-mousemove="count = count + 1" style = "background-color : #56ce23 ; display : inline-block"> Mouse Over Me!  &nbsp &nbsp &nbsp{{ count }}</h1> </br>
+		<button ng-click = "myfunction1();" style = "background-color : lightblue">Yellow</button>
+		<button ng-click = "myfunction2();" style = "background-color : pink">Grey</button>
+		<button ng-dblclick = "myfunction3();" >Fruits!! </button> </br>
+		<h1 ng-mouseenter = "myfunction4();" style = "color : grey ; background-color : orange ; display : inline-block"> TOUCH ME  TO DISPLAY THE DETAILS </h1></br>
+		<button ng-click='fun()'>Click me!</button>
+	</div>
+
+	<div style = "display : inline-block" ng-show = "list">
+		<hr>
+		<h2>apple</h2> 
+		<h2>banana</h2>
+		<h2>grape</h2>
+		<h2>mango</h2>
+		<hr>
+	</div>
+	
+	<div style = "display : inline-block" ng-show = "details" class = "styles">
+		<h2>Name :{{name}}</h2> 
+		<h2>Email :{{email}}</h2>
+		<h2>Department :{{department}}</h2>
+	</div>
+
+<div my-directive></div>
+
+	<script>
+		var app = angular.module('myApp', []);
+		app.controller('myCtrl', function($scope) {
+			$scope.count = 0;
+			$scope.list = false;
+			$scope.details = false;
+			$scope.name="sankar"
+			$scope.email="sankar@ofs.com"
+			$scope.department="cs"
+			
+			$scope.myfunction1 = function(){
+				document.body.style.backgroundColor = "grey" ;
+			}
+			$scope.myfunction2 = function(){
+				document.body.style.backgroundColor = "yellow" ;
+			}
+			$scope.myfunction3 = function() {
+				$scope.list = !$scope.list;
+			}
+			$scope.myfunction4 = function() {		
+				$scope.details = !$scope.details;			
+			}
+		});		
+
+				app.directive("myDirective" , function() {
+				
+					var a = function($scope) {
+						$scope.fun = function() {	
+							alert('my CustomDirective!');
+						};
+					};	
+						return {
+							link : a,
+									template: '<h1>Powered by : Lenovo </h1>',
+						}
+				});	
+	</script>
+
+</body>
+
+</html>
