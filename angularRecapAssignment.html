@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<style>
+table {
+  border: 1px solid #666;   
+    width: 100%;
+}
+th {
+  background: #f8f8f8; 
+  font-weight: bold;    
+    padding: 2px;
+}
+</style>
+</head>
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl"> 
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>COMPANY</th>
+    </tr>
+    <tr ng-repeat="item in companyData">
+	<td>{{item}}</td>
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.company}}</td>
+    </tr>
+</table>
+
+
+
+</div>
+
+
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $http) {
+  $http.get("employees.json")
+  .then(function(response) {
+		var companyData = response.data;
+
+  });
+});
+</script>
+
+</body>
+</html>
