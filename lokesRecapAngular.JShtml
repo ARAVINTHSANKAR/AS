@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<link data-require="bootstrap-css@*" data-semver="3.3.1" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script data-require="ui-bootstrap@*" data-semver="0.12.1" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.min.js"></script>
+<body ng-app="myApp" ng-controller="namesCtrl">
+	Enter the Search only the Title:<input type="text" ng-model="searchtxt.name">
+	<div >
+		View :<select ng-model="viewby" ng-change="setItemsPerPage(viewby)"><option>3</option><option>5</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select> records at a time.
+
+	<table border="1" width="100%">
+	<tr>
+	<th ng-click="orderByMe('name')">Employee</th>
+	<th ng-click="orderByMe('dept')">Department</th>
+	<th ng-click="orderByMe('role')">Role</th>
+	<th ng-click="orderByMe('type')">Type</th>
+	</tr>
+	<tr ng-repeat="x in names.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage)) | orderBy:myOrderBy |  filter : searchtxt">
+	<td>{{x.name}}</td>
+	<td>{{x.dept}}</td>
+	<td>{{x.role}}</td>
+	<td>{{x.type}}</td>
+	</tr>
+</table>
+<pagination total-items="totalItems" ng-model="currentPage"  class="pagination-sm" items-per-page="itemsPerPage"></pagination>
+
+</div>
+<p> In order to sort the author name or the price or the title <b>Click on the heading</b> <p>
+<script>
+
+angular.module('myApp', ['ui.bootstrap']).controller('namesCtrl', function($scope,$filter) {
+
+		$scope.names = [
+			{name: 'Dayal',     dept: 'cisco',       role: 'training',  type:'mkjnk'},
+			{name: 'Singhe',    dept: 'altisource',  role: 'analysis',  type:'retet'},
+			{name: 'Chetan',    dept: 'buildtrust',  role: 'testing',   type:'dsvsd'},
+			{name: 'Bagath',    dept: 'ceox',        role: 'r&d',       type:'gfd'},
+			{name: 'Ravinder',  dept: 'managment',   role: 'hr',        type:'fdg'},
+			{name: 'Aleena',    dept: 'cisco',       role: 'training',  type:'djkjfsa'},
+			{name: 'Sneha',     dept: 'altisource',  role: 'analysis',  type:'vvd'},
+			{name: 'Juvanna',   dept: 'buildtrust',  role: 'testing',   type:'kkjh'},
+			{name: 'Joel',      dept: 'ceox',        role: 'r&d',       type:'ads'},
+			{name: 'Jainy',     dept: 'managment',   role: 'hr',        type:'fdg'}
+    ];
+				$scope.viewby = 3;
+			  $scope.totalItems = $scope.names.length;
+			  $scope.currentPage = 1;
+			  $scope.itemsPerPage = $scope.viewby;
+			  //$scope.maxSize = 5; //Number of pager buttons to show
+    $scope.orderByMe = function(x) {
+        $scope.myOrderBy = x;
+    }
+
+
+		$scope.setItemsPerPage = function(num) {
+		  $scope.itemsPerPage = num;
+		  $scope.currentPage = 1; //reset to first page
+		}
+
+});
+</script>
+
+</body>
+</html>
