@@ -1,0 +1,134 @@
+function nameParaCurrent() {
+	limit1 = 0;
+	limit2 = 4;
+	sorted();
+}
+
+function nameParaNext() {
+	limit1 = 5;
+	limit2 = 9;
+	var name = [];
+	for(var i = limit1 ; i <= limit2 ; i++) {
+		name[i] = globalArray[i].name;
+	}
+ 	name[0] = "A";
+	name[1] = "A";
+	name[2] = "A";
+	name[3] = "A";
+	name[4] = "A"; 
+	name.sort();		
+	$(".myTable").empty();
+	$(".myTable").append("<tr><th>" +"ID"+ "</th><th>" +"NAME"+ "</th><th>" +"COMPANY"+ "</th><th>" +"COUNTRY"+ "</th><th>" +"RESET"+ "</th></tr>")
+	for(var i = limit1 ; i <= limit2; i++) {
+		$(".myTable").append("<tr><td>" +globalArray[i].id+ "</td> <td>" +name[i]+ "</td><td>" +globalArray[i].company+ "</td><td>" +globalArray[i].country+ "</td><td>" + "<button class = 'editButtonCurrent'>EDIT</button> <button onclick = Buttondelete("+i+")>DELETE</button>"+ "</td></tr>")		
+			id[i] = globalArray[i].id;
+			namee[i] = globalArray[i].name;
+			company[i] = globalArray[i].company;	
+			country[i] = globalArray[i].country;
+	}
+}
+
+function nameParaPrevious() {
+	nameParaCurrent();
+}
+
+function sorted() {
+	var name = [];
+	for(var i = limit1 ; i <= limit2 ; i++) {
+		name[i] = globalArray[i].name;
+	}
+	name.sort();		
+	$(".myTable").empty();
+	$(".myTable").append("<tr><th>" +"ID"+ "</th><th>" +"NAME"+ "</th><th>" +"COMPANY"+ "</th><th>" +"COUNTRY"+ "</th><th>" +"RESET"+ "</th></tr>")
+	for(var i = limit1 ; i <= limit2; i++) {
+		$(".myTable").append("<tr><td>" +globalArray[i].id+ "</td> <td>" +name[i]+ "</td><td>" +globalArray[i].company+ "</td><td>" +globalArray[i].country+ "</td><td>" + "<button class = 'editButtonCurrent'>EDIT</button> <button onclick = Buttondelete("+i+")>DELETE</button>"+ "</td></tr>")		
+		   id[i] = globalArray[i].id;
+		   namee[i] = globalArray[i].name;
+		   company[i] = globalArray[i].company;
+		   country[i] = globalArray[i].country;
+	}
+}
+
+function enableUpdataButton() {
+	document.getElementById('updateNewDataId').disabled = false;
+} 
+ 
+ function nextpage() {
+				limit1 = 5;
+				limit2 = 9;
+				$(".myTable").empty();
+				$(".myTable").append("<tr><th>" +"ID"+ "</th><th onclick = nameParaNext()>" +"NAME"+ "</th><th>" +"COMPANY"+ "</th><th>" +"COUNTRY"+ "</th><th>" +"RESET"+ "</th></tr>")
+				for(var i = limit1 ; i <= limit2; i++) {
+				$(".myTable").append("<tr><td>" +globalArray[i].id+ "</td> <td>" +globalArray[i].name+ "</td><td>" +globalArray[i].company+ "</td><td>" +globalArray[i].country+ "</td><td>" + "<button class = 'editButtonCurrent' onclick = Buttonedit("+i+")>EDIT</button> <button onclick = Buttondelete("+i+")>DELETE</button>"+ "</td></tr>")		
+				   id[i] = globalArray[i].id;
+				   namee[i] = globalArray[i].name;
+				   company[i] = globalArray[i].company;
+				   country[i] = globalArray[i].country;
+				}
+ }
+  
+ function Buttonedit(index) {
+	alert("you clicked Edit Button : " +(index + 1)+"");
+	$("#textid").val(id[index]);
+	$("#textname").val(namee[index]);
+	$("#textcompany").val(company[index]);
+	$("#textcountry").val(country[index]);
+	
+ 	var control = document.getElementById("EditingBox");
+	control.style.visibility = "visible";
+	
+	globalindex = index;
+	
+}
+
+function Buttondelete(index) {
+	globalArray.splice(index,1);
+	limit1 = 0;
+	limit2 = 4;
+	cleanData();
+	$(".myTable").append("<tr><th>" +"ID"+ "</th><th onclick = nameParaPrevious()>" +"NAME"+ "</th><th>" +"COMPANY"+ "</th><th>" +"COUNTRY"+ "</th><th>" +"RESET"+ "</th></tr>")
+	for(var i = limit1 ; i <= limit2; i++) {
+			$(".myTable").append("<tr><td>" +globalArray[i].id+ "</td> <td>" +globalArray[i].name+ "</td><td>" +globalArray[i].company+ "</td><td>" +globalArray[i].country+ "</td><td>" + "<button class = 'editButtonCurrent'>EDIT</button> <button onclick = Buttondelete("+i+")>DELETE</button>"+ "</td></tr>")
+	}
+}
+
+function cleanData() {
+	$(".myTable").empty();
+}
+
+
+function redisplayOfTable() {
+		var updatedid = $("#textid").val();
+		var updatedname = $("#textname").val();
+		var updatedcompany = $("#textcompany").val();
+		var updatedcountry = $("#textcountry").val();		
+
+		$(".myTable").empty();
+		$(".myTable").append("<tr><th>" +"ID"+ "</th><th>" +"NAME"+ "</th><th>" +"COMPANY"+ "</th><th>" +"COUNTRY"+ "</th><th>" +"RESET"+ "</th></tr>")
+		for(var i = limit1 ; i <= limit2; i++) {
+			if(globalindex != i){ 
+				$(".myTable").append("<tr><td>" +globalArray[i].id+ "</td> <td>" +globalArray[i].name+ "</td><td>" +globalArray[i].company+ "</td><td>" +globalArray[i].country+ "</td><td>" + "<button class = 'editButtonCurrent'>EDIT</button> <button>DELETE</button>"+ "</td></tr>")		
+			} 
+			else {
+				$(".myTable").append("<tr><td>" +updatedid+ "</td> <td>" +updatedname+ "</td><td>" +updatedcompany+ "</td><td>" +updatedcountry+ "</td><td>" + "<button class = 'editButtonCurrent'>EDIT</button> <button onclick = Buttondelete("+i+")>DELETE</button>"+ "</td></tr>")
+			} 
+		}
+}
+
+function search(nameKey, myArray){
+    for (var i=0; i < myArray.length; i++) {
+        if (myArray[i].name === nameKey) {
+            var searchedData = myArray[i];
+			$(".myTable").empty();
+			$(".myTable").append("<tr><th>" +"ID"+ "</th><th onclick = nameParaPrevious()>" +"NAME"+ "</th><th>" +"COMPANY"+ "</th><th>" +"COUNTRY"+ "</th><th>" +"RESET"+ "</th></tr>")
+			$(".myTable").append("<tr><td>" +myArray[i].id+ "</td> <td>" +myArray[i].name+ "</td><td>" +myArray[i].company+ "</td><td>" +myArray[i].country+ "</td><td>" + "<button class = 'editButtonCurrent'>EDIT</button> <button onclick = Buttondelete("+i+")>DELETE</button>"+ "</td></tr>") 
+		}
+    }
+}
+
+function dataSearch() {
+	var username = $('#searchId').val(); 
+	var resultObject = search(username, globalArray);
+	search();
+}
+ 
