@@ -5,25 +5,57 @@
 <head>
 	<title>Data Loading</title>
 	<link rel = "stylesheet" href = "style.css" />
+	<link rel = "stylesheet" href = "newstyle.css" />
 	<script src="jquery-3.2.1.min.js"> </script>
 	<script src="jquery-ui.min.js"> </script>
 
 	<script src = "script2.js"> </script>
+	<script src = "script3.js"> </script>
 </head>
 	
-<body>
-	<button class = "buttonclick" > Click me! </button>
-	<div>
-	<strong style = "background-color : orange;">DATA SECTION </strong>
-		<table id = "myTable" > 
-			<tr>
-				<th>ID</th>
-				<th>NAME</th>
-				<th>COMPANY</th>
-				<th>COUNTRY</th>
-			</tr>
-		</table><br>
-			<button>Previous</button> <button class ="nextpage">Next</button>
+<body class = "myBody">
+	<div id = "FirstDiv">
+		<div class = "buttonDiv">
+			<button class = "buttonclick" id = "new"> List Of Data! </button>
+			<button class = "newDataButton" id = "new" onclick = "enableUpdataButton()">Enter New Data</button>
+			<button id = "updateNewDataId" disabled >Update New Data</button>
+			<input type = "text" id = "searchId" onclick = "dataSearch()"> <font color=" #709fa3" style ="font-weight : bold;"> <button onclick = "dataSearch()" id = "new">Search</button>
+		</div>
+	</div> <br>
+	
+	<div class = "SecondDiv">
+			<div>
+					<table class = "myTable" id = "myTableId" > 
+					</table><br>
+					<button style = "visibility : hidden; margin-bottom : 10px;" class = "previouspage" id = "pageIdPrevious">Previous</button> <button style = "visibility : hidden;" class ="nextpage" id = "pageIdNext">Next</button> <br>
+				<div id = "EditingBox"  style = "visibility: hidden;">
+					<fieldset>
+						<legend> <font color=" #709fa3">DETAILS</legend>
+						<font color=" #709fa3" style ="font-weight : bold;">ID 
+						<textarea id = "textid" rows="1" cols="10"> </textarea> 
+						<font color=" #709fa3">NAME 
+						<textarea id = "textname" rows="1" cols="10"> </textarea>  
+						<font color=" #709fa3">COMPANY 
+						<textarea id = "textcompany" rows="1" cols="10"> </textarea>
+						<font color=" #709fa3">COUNTRY 
+						<textarea id = "textcountry" rows="1" cols="10"> </textarea> 
+						<button id = "saveButton" >Save</button> <button id = "resetButton" onclick = "resetfun()">Reset</button> <button id= "cancelButton" onclick = "cancel()">Cancel</button>
+					</fieldset>
+				</div> 					
+			</div>
+			
+			<div class = "textFieldDiv" id = "textFieldDivId">
+				<form style = "background-color : #858689; border-radius : 20px;	padding-left : 20px; padding-top : 10px; padding-bottom : 10px;">
+					<label> <font color=" black" style ="font-weight : bold;"> ID</label> <br>
+					<input id = "idTextBox" type = "text" placeholder="Your id"> </input><br>
+					<label>NAME</label><br>
+					<input id = "nameTextBox" type = "text" placeholder="Your name"> </input><br>
+					<label>COMPANY</label><br>
+					<input id = "countryTextBox" type = "text" placeholder="Your company"> </input><br>
+					<label>COUNTRY</label><br>
+					<input id = "companyTextBox" type = "text" placeholder="Your country"> </input><br>	
+				</form>
+			</div>
 	</div>
 </body>
 
