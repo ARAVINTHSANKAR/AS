@@ -1,0 +1,49 @@
+#new {
+	background: #325063;
+	background-image: -webkit-linear-gradient(top, #325063, #009dff);
+	-webkit-border-radius: 28;
+	-moz-border-radius: 28;
+	border-radius: 28px;
+	font-family: Georgia;
+	color: #ffffff;
+	font-size: 10px;
+	font-weight : bold;
+	padding: 10px 20px 10px 20px;
+	text-decoration: none;
+}
+
+#new:hover {
+	background: #3cb0fd;
+	background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+	text-decoration: none;
+}
+
+#updateNewDataId {
+	background: #325063;
+	background-image: -webkit-linear-gradient(top, #325063, #009dff);
+	-webkit-border-radius: 28;
+	-moz-border-radius: 28;
+	border-radius: 28px;
+	font-family: Georgia;
+	color: #ffffff;
+	font-size: 10px;
+	font-weight : bold;
+	padding: 10px 20px 10px 20px;
+	text-decoration: none;
+}
+
+#updateNewDataId:hover {
+	background: #3cb0fd;
+	background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+	text-decoration: none;
+}
+
+input[type=text], select {
+    width: 95%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
