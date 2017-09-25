@@ -1,8 +1,79 @@
 table {
-		border-collapse: collapse;
-	  }
+	border-collapse: collapse;
+	width : 70%;
+}
+
+th {
+	background-color : #294277;
+}
+
+td, th {
+	padding: 5px;
+}
 
 table, td, th {
-			border: 1px solid black;
-		}
-tr:nth-child(even){background-color: #f2f2f2}	
+	border: 1px solid black;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+.myBody {
+	background-color : #2c7699;
+}
+
+.previouspage {
+	background-color :#edaa68;
+	border-radius : 40px;
+}
+
+.nextpage{
+	background-color :#edaa68;
+	border-radius : 40px;
+}
+
+.buttonDiv {
+	padding-left : 80px;
+	padding-top : 20px;
+	padding-bottom : 20px;
+}
+
+.textfieldDiv {
+	visibility : hidden;
+	width : 50%;
+	padding-top : 30px;
+}
+
+.editButtonCurrent {
+	background-color : #edaa68;
+}
+
+#FirstDiv {
+	background-color : #294277;
+}
+
+#EditingBox {
+	width : 70%;
+	background-color : #00375e;
+}
+
+#saveButton {
+	background-color : #edaa68;
+	margin-left : 20px;
+}
+
+#resetButton {
+	background-color : #edaa68;
+	margin-left : 10px;
+}
+
+#cancelButton {
+	background-color : #edaa68;
+	margin-left : 10px;	
+}
+
+#searchId {
+	width : 12%;
+	background-color : white;
+	margin-left : 610px;
+	height : 5%;
+}
