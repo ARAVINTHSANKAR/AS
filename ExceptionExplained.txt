@@ -1,0 +1,4 @@
+Exception is an event, occured during program execution, whenever this event occurs an exception object is created
+which contains the error log(type of the error, where its occured, etc), this will be handled to the runtime System. it will further checks for the handler for particular event, it traverse through call stack in reverse way. if found fine if not it terminates.
+
+visit -- https://docs.oracle.com/javase/tutorial/essential/exceptions/definition.html 
