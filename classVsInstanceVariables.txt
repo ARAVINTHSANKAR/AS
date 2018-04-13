@@ -1,0 +1,10 @@
+public class IdentifyMyParts {
+    public static int x = 7; 
+    public int y = 3; 
+}
+//    - What are the class variables?
+                * The variables whose reference are in the class level
+                * No need for them to create an object as they are in class
+                * Memory allocation for these variables happens only once
+//    - What are the instance variables?
+                * an object is mandatory to access this type of variable.

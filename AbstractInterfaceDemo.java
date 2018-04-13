@@ -21,7 +21,8 @@ abstract class childAbstract implements CommonActivities {
     }
 }
 
-class AbstractInterfaceDemo implements childInterface{
+class AbstractInterfaceDemo imple
+ments childInterface{
     public void move() {
         out.println("move method from interface commonActivities");
     }
