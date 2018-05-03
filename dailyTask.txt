@@ -1,0 +1,45 @@
+april last
+
+1.  y nosql in chola 4
+2.  null , undefined, empty  3 .................
+3.  source tree installation   1 ..............
+4.  keerthana call and inform  2...........
+5.  diff binary and bytecode 6
+6.  buffer, chunk,  8 ..........
+7.  docu wiki 7 ..........
+8.  markup and scripting language 5 ..........
+9. try some hash function 9
+
+
+may 2
+
+1. apply leave 8
+	* postponed to tmrw
+	* 1st inform priya
+2. enter inia  7
+	done
+3. prepare excel  6
+	done
+4. sql excersise    4
+	* created the required queries
+5. try remote server   3
+	* could not establish a connection with server ..........
+6. check a work flow    1.........
+	* analysed notification api
+	* get method is easy post method is confusing
+7. complete the bank task   2
+8. newspaper  9
+9. push it in git  5........
+	* pushed
+
+may 3
+
+1. inform leave to priya 	--8 ........2mins
+2. apply leave		--9 .........2mins
+3. enter inia && xcel		--7  .........15mins
+4. try sql tasks on  "D:\dev\training\currentTraining\questions\sqlQuestions"	--6  .........1hr
+5. check for mail on source tree 	--4  .......2mins
+6. complete previous day sql task	--5  ........1hr
+7. complete today poc ( poc 1)   	--1  .......2hr
+8. check the update api on bank task	--2  ........30mins
+9. write one more api for the bank task	--3  ........1.30hr

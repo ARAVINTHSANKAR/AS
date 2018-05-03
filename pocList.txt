@@ -1,0 +1,8 @@
+LIST OF POC
+1. node mailer
+2. file upload, download
+3. api to fetch, update, save, delete datas in db
+4. login and generating auth token  -- 1
+
+may 3 -- Login and generating auth token
+
