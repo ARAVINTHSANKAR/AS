@@ -1,0 +1,362 @@
+
+--------------main controller--------------
+const randomize = require('randomatic');
+const mongoose = require('mongoose');
+var async = require('async');
+
+var employeeSchema = require('../db/schema/employee');
+var projectSchema = require('../db/schema/project');
+var sessionSchema = require('../db/schema/session');
+var dbConnection = require('../db/dbConnection/dbConnection');
+
+var objectId = mongoose.Types.ObjectId;
+
+module.exports = {
+    
+    authenticateLogin: async (reqObj) => {        
+    
+        let responseObj = {};
+        let queryObj = { emplName: reqObj.body.name };        
+        var auth = await employeeSchema.find(queryObj, (err, data) => {
+            if(err) { 
+                responseObj.status = "Failed";
+                responseObj.message = "Server error";
+                return responseObj;
+            } else if(!data || data.length == 0) {
+                responseObj.status = "Failed";
+                responseObj.message = "Wrong Credentials";
+                return responseObj;
+            } else {
+                responseObj.status = "success";
+                responseObj.userId = data[0]._id;
+            }
+        });
+        if(responseObj.status == "success" && auth[0].password == reqObj.body.password) {
+            var token = randomize('aA0', 10);
+            var userSession = await module.exports.setSession(auth[0], token);
+            if(userSession == "success") {
+                responseObj.status = "success";
+                responseObj.token = token;
+                return responseObj;
+            }
+        } else {
+            responseObj = {};
+            responseObj.status = "Failed";
+            responseObj.message = "Wrong credentials";
+            return responseObj;
+        }
+    },
+
+    setSession: (userObj, token) => {
+
+        var newSession = new sessionSchema({
+            token: token
+            ,userId: userObj._id
+            ,userName: userObj.emplName
+            ,modifiedTime: new Date()
+            ,role: userObj.role
+        });
+        newSession.save();
+        return "success";
+    },
+
+    isEmpty: (value) => {
+
+        if( value == null || value == undefined || value == "" ) {
+            return true;
+        } else {
+            if (typeof value == "object") {
+                let prop = Object.keys(value);
+                if(prop.length == 0) {
+                    return true;
+                } else return false;
+            } else false;
+        }
+    },
+
+    createEmployee: (req) => {
+        
+        var errObj = {
+            status: "Failed"
+        };
+        var reqObj = req;
+        var response = async.waterfall([
+            formQueryObj,
+            addNewEmployee,
+            resultParser,
+        ], function (err, result) {
+               if(err) return err;
+               else return result;console.log("4" +result);
+        });
+
+        function formQueryObj(callback) {
+            var isBody = module.exports.isEmpty(reqObj.body);
+            if(!callback) {
+                var callback = function callback() {};
+            }
+            var queryObj;
+            isBody ? (errObj.message = "Body is empty") && (callback(errObj, null)) : queryObj = reqObj.body;
+            console.log("1"+queryObj);
+            callback(null, queryObj);
+        }
+
+        function addNewEmployee(queryObj, callback) {
+            try {
+                var employee = new employeeSchema({
+                 projectId: objectId(queryObj.projectId)
+                ,emplName: queryObj.name
+                ,dob: new Date(queryObj.dob)
+                ,dateOfJoining: new Date(queryObj.dateOfJoining)
+                ,annualSalary: queryObj.salary
+                ,role: queryObj.role
+                ,address: [{
+                    doorNo: queryObj.doorNo
+                    ,streetName: queryObj.streetName
+                    ,city: queryObj.city
+                    ,state: queryObj.state
+                    ,pinCode: queryObj.pinCode
+                    ,phoneNo: queryObj.phoneNo
+                    ,emailId: queryObj.emailId
+                }]
+                });                  
+                employee.save();
+            } catch(ex) {
+                console.log("some error occured");
+            }
+            let result = {
+                status : "success"
+            }
+            console.log("2" +result);
+            callback(null, result);
+        }
+
+        function resultParser(result, callback) {
+            !result.status == "success" ? callback("Data not inserted") : null;
+            var endResult = {
+                 status : "success"
+                ,message: "Employee added successfully"
+            }
+            console.log("3" +endResult);
+            callback(null, endResult);
+        }
+    }
+}
+---------------------------------------------------------------
+
+---------------dbConnection---------------------------------
+const mongoose = require('mongoose');
+
+var mongoDbUrl = 'mongodb://localhost:27017/CompanyDetail';
+var dbConnection = mongoose.connection;
+
+var connection = mongoose.connect(mongoDbUrl);
+dbConnection.on('error', () => {
+    console.log("something went wrong during db connection");
+});
+
+module.exports = connection;
+------------------------------------------------------------
+
+-------------employee.js-------------------------------
+const mongoose = require('mongoose');
+
+
+var schema = mongoose.Schema;
+var objectId = schema.ObjectId;
+
+var employee = new schema({
+     projectId: { type: objectId, ref: "Project"}
+    ,emplName: String
+    ,password: String
+    ,dob: Date
+    ,dateOfJoining: Date
+    ,annualSalary: Number    
+    ,role: String
+    ,address: [{
+        doorNo: String
+        ,streetName: String
+        ,city: String
+        ,state: String
+        ,pinCode: Number
+        ,phoneNo: Number
+        ,emailId: String
+    }]
+})
+
+var employeeSchema = mongoose.model('Employee', employee);
+module.exports = employeeSchema;
+----------------------------------------
+-------------project.js------------------------
+const mongoose = require('mongoose');
+
+
+var schema = mongoose.Schema;
+var objectId = schema.ObjectId;
+
+var project = new schema({
+    project: String
+});
+
+var projectSchema = mongoose.model('Project', project);
+module.exports = projectSchema;
+
+-----------------------------------------------
+------------session.js------------------------
+const mongoose = require('mongoose');
+var schema = mongoose.Schema;
+var objectId = mongoose.Types.ObjectId;
+
+var UserSession = new schema({
+     token: String
+    ,userId: String
+    ,userName: String
+    ,modifiedTime: Date
+    ,role: String
+});
+
+var sessionSchema = mongoose.model('Session', UserSession);
+module.exports = sessionSchema;
+
+----------------------------------------
+-----------router.js------------------------const express = require('express');
+const bodyParser = require('body-parser');
+
+
+var mainController = require('../controller/mainController')
+
+var app = express();
+app.use(bodyParser.json());
+var resObj = {};
+var errObj = { status: "Failed", message: "Some Error occured" };
+
+app.use( (req, res) => {
+            
+})
+
+app.post('/authenticate', async (req, res) => {
+    
+    if(!req.body || req.body == {}) {
+        resObj.status = "Failed";
+        resObj.message = "Please enter login credentials";
+        res.send(resObj);
+    } else {
+        var response = await mainController.authenticateLogin(req);
+        if(!response) {
+            errObj.message = "Error in generaring token";
+            res.send(errObj);
+        } else {
+            resObj = response;
+            res.send(resObj);
+        }
+    }
+});
+
+app.post('/addEmployee', async (req, res) => {
+    var addEmployee = await mainController.createEmployee(req);
+    res.send(addEmployee);
+});
+
+app.get('/projectList', (req, res) => {
+
+});
+
+app.listen(8080, () => {
+    console.log("port 8080 running");
+});
+
+------------------------------------------------
+------------rough.txt-------------
+
+var employee = new employeeSchema({
+     projectId: objectId("5aeae91779667eb38223b28c")
+    ,emplName: "sankar"
+    ,dob: new Date("1995-10-27")
+    ,dateOfJoining: new Date("2017-06-14")
+    ,annualSalary: 20000
+    ,role: "Admin"
+    ,address: [{
+        doorNo: "22A"
+        ,streetName: "South Street"
+        ,city: "Sivakasi"
+        ,state: "TN"
+        ,pinCode: 626456
+        ,phoneNo: 8907897787
+        ,emailId: "a@a.com"
+    }]
+});
+
+employee.save();
+
+function byteCount(s) {
+    return encodeURI(s).split(/%..|./).length - 1;
+}
+
+console.log(byteCount("ARAVINTHOFSA"))
+
+    addEmployee: async (reqObj) => {
+        var isTokenValid = await module.exports.isTokenValid(reqObj.headers.token);
+        if(isTokenValid == "true") {
+            
+        }
+        var employee = new employeeSchema({
+            projectId: objectId("5aeae91779667eb38223b28c")
+           ,emplName: "sankar"
+           ,dob: new Date("1995-10-27")
+           ,dateOfJoining: new Date("2017-06-14")
+           ,annualSalary: 20000
+           ,role: "Admin"
+           ,address: [{
+               doorNo: "22A"
+               ,streetName: "South Street"
+               ,city: "Sivakasi"
+               ,state: "TN"
+               ,pinCode: 626456
+               ,phoneNo: 8907897787
+               ,emailId: "a@a.com"
+           }]
+       });       
+       employee.save();
+    },
+
+
+    
+    // var userToken = req.headers.token;
+    // var isToken = mainController.isEmpty(userToken);
+    // var isBody = mainController.isEmpty(req.body);
+    // if(isToken == "false") {
+    //     errObj.message = "Invalid Token";
+    //     res.send(errObj);
+    // } else if(isBody == "false") {
+    //     errObj.message = "Please enter Employee details";
+    //     res.send(errObj);
+    // } else {
+    //     var response = await mainController.addEmployee(req);
+    //     if(!response) {
+    //         errObj.message = "Error in adding employee";
+    //         res.send(errObj);
+    //     } else {
+    //         resObj = response;
+    //         res.send(resObj);
+    //     }
+    // }
+
+    -----------------------------------------
+    
+    COMPANYDETAILSAPP
+        app
+            controller
+                mainController.js
+            db
+                dbConnection
+                    dbConnection.js
+                schema
+                    employee.js
+                    project.js
+                    session.js
+            routes
+                router.js
+                
+        nodemodules
+        package.lock.json
+        package.json
+        rough.txt
