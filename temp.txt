@@ -1,0 +1,255 @@
+---------routes=------------------
+const express = require('express');
+const bodyParser = require('body-parser');
+const url = require('url');
+
+
+var mainController = require('../controller/mainController')
+
+var app = express();
+app.use(bodyParser.json());
+var resObj = {};
+var errObj = { status: "Failed", message: "Some Error occured" };
+
+app.use( async (req, res, next) => {
+    console.log(uri.path)
+    let uri = url.parse(req.url, true);    
+    if(uri.path == "authenticate") {
+        next();
+    } else if(!req.headers.token || req.headers.token == "") {
+        res.send({message: "Authentication problem"});
+    }
+    var validateToken = await mainController.checkSessionAvailability(req.headers.token);
+    if(validateToken.status == "failed") {
+        res.send(validateToken);
+    }
+    next();            
+});
+
+app.post('/authenticate', async (req, res) => {
+    
+    if(!req.body || req.body == {}) {
+        resObj.status = "Failed";
+        resObj.message = "Please enter login credentials";
+        res.send(resObj);
+    } else {
+        var response = await mainController.authenticateLogin(req);
+        if(!response) {
+            errObj.message = "Error in generaring token";
+            res.send(errObj);
+        } else {
+            resObj = response;
+            res.send(resObj);
+        }
+    }
+});
+
+app.post('/addEmployee', async (req, res) => {
+    var addEmployee = await mainController.createEmployee(req);
+    res.send(addEmployee);
+});
+
+app.get('/projectList', (req, res) => {
+
+});
+
+app.listen(8080, () => {
+    console.log("port 8080 running");
+});
+----------------------------------
+
+
+
+
+
+--------maincontroller-----------
+const randomize = require('randomatic');
+const mongoose = require('mongoose');
+var async = require('async');
+
+var employeeSchema = require('../db/schema/employee');
+var projectSchema = require('../db/schema/project');
+var sessionSchema = require('../db/schema/session');
+var dbConnection = require('../db/dbConnection/dbConnection');
+
+var objectId = mongoose.Types.ObjectId;
+
+module.exports = {
+
+    checkSessionAvailability: async (userToken) => {
+
+        async.waterfall([
+            checkSession,
+            validateSession,
+            resultParser,
+        ], function (err, result) {
+            if(err) console.log("some error occured " +err);
+            else return result;
+        })
+
+        let responseObj = {}        
+        function checkSession() {
+            var response = await sessionSchema.find({token: userToken}, (err, data) => {
+                console.log('1');
+                if(err) console.log("could not connect to database");
+                else if(!data || data.length == 0) {
+                    responseObj.status = "failed";
+                    responseObj.message = "session expired";
+                    responseObj.data = data;
+                }
+            });
+            callback(null, response);
+        }
+
+        function validateSession(sessionObj, callback) {
+            var startTime = sessionObj.data.modifiedTime;
+            var endTime = new Date();
+            var seconds = endTime - startTime;
+            if(seconds >= 1800) {
+                callback(sessionObj, null);
+            } else {
+                sessionSchema.findByIdAndUpdate( {token: sessionObj.token}, {modifiedTime: endTime}, (err, data) => {
+                    if(err) console.log(err);
+                });
+            }
+            callback(null, sessionObj);
+        }
+
+        var resultParser = await function (resultObj) {
+            console.log('3');
+            if(resultObj.status == "failed") {
+                resultObj.message = "Authentication failed";
+                callback(null, resultObj);
+            }
+            callback(null, resultObj);
+        }
+    },
+
+    authenticateLogin: async (reqObj) => {
+    
+        let responseObj = {};
+        let queryObj = { emplName: reqObj.body.name };        
+        var auth = await employeeSchema.find(queryObj, (err, data) => {
+            if(err) { 
+                responseObj.status = "Failed";
+                responseObj.message = "Server error";
+                return responseObj;
+            } else if(!data || data.length == 0) {
+                responseObj.status = "Failed";
+                responseObj.message = "Wrong Credentials";
+                return responseObj;
+            } else {
+                responseObj.status = "success";
+                responseObj.userId = data[0]._id;
+            }
+        });
+        if(responseObj.status == "success" && auth[0].password == reqObj.body.password) {
+            var token = randomize('aA0', 10);
+            var userSession = await module.exports.setSession(auth[0], token);
+            if(userSession == "success") {
+                responseObj.status = "success";
+                responseObj.token = token;
+                return responseObj;
+            }
+        } else {
+            responseObj = {};
+            responseObj.status = "Failed";
+            responseObj.message = "Wrong credentials";
+            return responseObj;
+        }
+    },
+
+    setSession: (userObj, token) => {
+
+        var newSession = new sessionSchema({
+            token: token
+            ,userId: userObj._id
+            ,userName: userObj.emplName
+            ,modifiedTime: new Date()
+            ,role: userObj.role
+        });
+        newSession.save();
+        return "success";
+    },
+
+    isEmpty: (value) => {
+
+        if( value == null || value == undefined || value == "" ) {
+            return true;
+        } else {
+            if (typeof value == "object") {
+                let prop = Object.keys(value);
+                if(prop.length == 0) {
+                    return true;
+                } else return false;
+            } else false;
+        }
+    },
+
+    createEmployee: (req) => {
+        
+        var errObj = {
+            status: "Failed"
+        };
+        var reqObj = req;
+        var response = async.waterfall([
+            formQueryObj,
+            addNewEmployee,
+            resultParser,
+        ], function (err, result) {
+               if(err) return err;
+               else return result;console.log("4" +result);
+        });
+
+        function formQueryObj(callback) {
+            var isBody = module.exports.isEmpty(reqObj.body);
+            if(!callback) {
+                var callback = function callback() {};
+            }
+            var queryObj;
+            isBody ? (errObj.message = "Body is empty") && (callback(errObj, null)) : queryObj = reqObj.body;
+            callback(null, queryObj);
+        }
+
+        function addNewEmployee(queryObj, callback) {
+            try {
+                var employee = new employeeSchema({
+                 projectId: objectId(queryObj.projectId)
+                ,emplName: queryObj.name
+                ,dob: new Date(queryObj.dob)
+                ,dateOfJoining: new Date(queryObj.dateOfJoining)
+                ,annualSalary: queryObj.salary
+                ,role: queryObj.role
+                ,address: [{
+                    doorNo: queryObj.doorNo
+                    ,streetName: queryObj.streetName
+                    ,city: queryObj.city
+                    ,state: queryObj.state
+                    ,pinCode: queryObj.pinCode
+                    ,phoneNo: queryObj.phoneNo
+                    ,emailId: queryObj.emailId
+                }]
+                });                  
+                employee.save();
+            } catch(ex) {
+                console.log("some error occured");
+            }
+            let result = {
+                status : "success"
+            }
+            console.log("2" +result);
+            callback(null, result);
+        }
+
+        function resultParser(result, callback) {
+            !result.status == "success" ? callback("Data not inserted") : null;
+            var endResult = {
+                 status : "success"
+                ,message: "Employee added successfully"
+            }
+            console.log("3" +endResult);
+            callback(null, endResult);
+        }
+    }
+}
+------------------------------------
